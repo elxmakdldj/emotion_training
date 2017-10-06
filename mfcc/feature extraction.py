@@ -1,7 +1,5 @@
 import librosa
 import csv
-import numpy as np
-from sklearn.decomposition import PCA
 
 output=1
 with open('./mfcc.csv', 'w', newline='') as csvfile:
@@ -11,7 +9,7 @@ with open('./mfcc.csv', 'w', newline='') as csvfile:
         y, sr = librosa.load(filename)
         mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=20) #mfcc 추출값은 20차원의 벡터
         a = []
-        ''' #mfcc 추출 평균값
+         #mfcc 추출 평균값
         s = 0
         for j in mfcc:
             for k in j:
@@ -22,11 +20,3 @@ with open('./mfcc.csv', 'w', newline='') as csvfile:
         if i%50==0:
             output=output+1
         writer.writerow(a)
-        '''
-        pca = PCA(n_components=20) #주성분 분석으로 차원 압축을 한 값
-        pca.fit(mfcc)
-        a=pca.explained_variance_ratio_
-        np.hstack((a, output))
-        writer.writerow(np.hstack((a, output)))
-        if i % 50 == 0:
-            output = output + 1
